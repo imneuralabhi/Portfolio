@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Mail, Github, Linkedin, Send, Terminal, Twitter } from 'lucide-react';
+import { Github, Linkedin, Send, Terminal, Twitter } from 'lucide-react';
 import { useState, type FormEvent, type ReactNode } from 'react';
 
 export const Contact = () => {
@@ -53,7 +53,6 @@ export const Contact = () => {
                 <div className="space-y-8 w-full">
                   <p className="text-gray-500 text-xs uppercase tracking-[0.3em] mb-6">Transmission Channels</p>
                   <div className="flex justify-center gap-8">
-                    <SocialLink icon={<Mail className="w-6 h-6" />} href={`mailto:${profileLinks.email}`} />
                     <SocialLink icon={<Github className="w-6 h-6" />} href={profileLinks.github} />
                     <SocialLink icon={<Linkedin className="w-6 h-6" />} href={profileLinks.linkedin} />
                     <SocialLink icon={<Twitter className="w-6 h-6" />} href={profileLinks.x} />
