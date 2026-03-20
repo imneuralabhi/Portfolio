@@ -1,9 +1,27 @@
 import { motion } from 'motion/react';
 import { Mail, Github, Linkedin, Send, Terminal, Twitter } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useState, type FormEvent, type ReactNode } from 'react';
 
 export const Contact = () => {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+
+  const profileLinks = {
+    github: 'https://github.com/imneuralabhi',
+    linkedin: 'https://www.linkedin.com/in/neuralabhi/',
+    x: 'https://x.com/neuralabhi',
+    email: 'abhimishra8622@gmail.com',
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const subject = encodeURIComponent(`Portfolio Contact | ${formState.name || 'Visitor'}`);
+    const body = encodeURIComponent(
+      `Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`
+    );
+
+    window.location.href = `mailto:${profileLinks.email}?subject=${subject}&body=${body}`;
+  };
 
   return (
     <section id="contact" className="py-24 px-4 max-w-6xl mx-auto">
@@ -35,10 +53,10 @@ export const Contact = () => {
                 <div className="space-y-8 w-full">
                   <p className="text-gray-500 text-xs uppercase tracking-[0.3em] mb-6">Transmission Channels</p>
                   <div className="flex justify-center gap-8">
-                    <SocialLink icon={<Mail className="w-6 h-6" />} href="mailto:abhimishra8622@gmail.com" />
-                    <SocialLink icon={<Github className="w-6 h-6" />} href="https://github.com" />
-                    <SocialLink icon={<Linkedin className="w-6 h-6" />} href="https://linkedin.com" />
-                    <SocialLink icon={<Twitter className="w-6 h-6" />} href="https://x.com/neuralabhi" />
+                    <SocialLink icon={<Mail className="w-6 h-6" />} href={`mailto:${profileLinks.email}`} />
+                    <SocialLink icon={<Github className="w-6 h-6" />} href={profileLinks.github} />
+                    <SocialLink icon={<Linkedin className="w-6 h-6" />} href={profileLinks.linkedin} />
+                    <SocialLink icon={<Twitter className="w-6 h-6" />} href={profileLinks.x} />
                   </div>
                 </div>
 
@@ -51,12 +69,15 @@ export const Contact = () => {
           </div>
 
           <div className="relative">
-            <form className="space-y-6 p-8 rounded-2xl bg-white/5 border border-white/10">
+            <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl bg-white/5 border border-white/10">
               <div className="space-y-2">
                 <label className="text-xs font-mono text-accent-cyan uppercase tracking-widest">Name</label>
                 <input 
                   type="text"
+                  value={formState.name}
+                  onChange={(event) => setFormState((previous) => ({ ...previous, name: event.target.value }))}
                   placeholder="Enter your name"
+                  required
                   className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-cyan transition-colors font-mono"
                 />
               </div>
@@ -64,7 +85,10 @@ export const Contact = () => {
                 <label className="text-xs font-mono text-accent-cyan uppercase tracking-widest">Email</label>
                 <input 
                   type="email"
+                  value={formState.email}
+                  onChange={(event) => setFormState((previous) => ({ ...previous, email: event.target.value }))}
                   placeholder="Enter your email"
+                  required
                   className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-cyan transition-colors font-mono"
                 />
               </div>
@@ -72,11 +96,14 @@ export const Contact = () => {
                 <label className="text-xs font-mono text-accent-cyan uppercase tracking-widest">Message</label>
                 <textarea 
                   rows={4}
+                  value={formState.message}
+                  onChange={(event) => setFormState((previous) => ({ ...previous, message: event.target.value }))}
                   placeholder="Type your message..."
+                  required
                   className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-cyan transition-colors font-mono resize-none"
                 />
               </div>
-              <button className="w-full glow-button py-4 bg-accent-cyan text-bg-dark font-bold rounded-lg flex items-center justify-center gap-2">
+              <button type="submit" className="w-full glow-button py-4 bg-accent-cyan text-bg-dark font-bold rounded-lg flex items-center justify-center gap-2">
                 <Send className="w-5 h-5" />
                 SEND MESSAGE
               </button>
@@ -93,18 +120,6 @@ export const Contact = () => {
     </section>
   );
 };
-
-const ContactItem = ({ icon, label, value, href }: { icon: ReactNode, label: string, value: string, href: string }) => (
-  <a href={href} className="flex items-center gap-4 group">
-    <div className="p-3 rounded-lg bg-white/5 text-accent-cyan group-hover:bg-accent-cyan group-hover:text-bg-dark transition-all">
-      {icon}
-    </div>
-    <div>
-      <p className="text-[10px] text-gray-500 uppercase tracking-widest">{label}</p>
-      <p className="text-white group-hover:text-accent-cyan transition-colors">{value}</p>
-    </div>
-  </a>
-);
 
 const SocialLink = ({ icon, href }: { icon: ReactNode, href: string }) => (
   <a 
